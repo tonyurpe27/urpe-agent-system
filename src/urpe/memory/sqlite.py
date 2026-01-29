@@ -140,6 +140,10 @@ class MemoryStore:
             }
         finally:
             session.close()
+    
+    def close(self):
+        """Close the database engine connection (important for Windows)."""
+        self.engine.dispose()
 
 
 # Default memory store instance

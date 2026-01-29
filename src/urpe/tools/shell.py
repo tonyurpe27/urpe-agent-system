@@ -46,14 +46,23 @@ def run_command(
             )
     
     try:
-        # Use shell=True on Windows for proper command parsing
-        result = subprocess.run(
-            command,
-            shell=True,
-            capture_output=True,
-            text=True,
-            timeout=timeout,
-        )
+        import sys
+        # Use cmd /c on Windows to avoid shell=True permission issues
+        if sys.platform == "win32":
+            result = subprocess.run(
+                ["cmd", "/c", command],
+                capture_output=True,
+                text=True,
+                timeout=timeout,
+            )
+        else:
+            result = subprocess.run(
+                command,
+                shell=True,
+                capture_output=True,
+                text=True,
+                timeout=timeout,
+            )
         
         output = result.stdout
         error = result.stderr if result.returncode != 0 else None

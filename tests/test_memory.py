@@ -14,6 +14,7 @@ def memory_store():
         db_path = os.path.join(tmpdir, "test.db")
         store = MemoryStore(db_path=db_path)
         yield store
+        store.close()  # Close SQLite connection before cleanup (Windows requires this)
 
 
 def test_create_conversation(memory_store):
